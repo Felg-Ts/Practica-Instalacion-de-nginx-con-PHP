@@ -16,4 +16,4 @@ virtualhosts:
       error_log: /var/log/nginx/example2_error.log;
 
 delvirtualhosts:
-  - name: none
+  - name: vhost2
