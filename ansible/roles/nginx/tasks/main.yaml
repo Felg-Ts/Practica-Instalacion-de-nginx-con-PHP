@@ -1,0 +1,72 @@
+- name: Install nginx
+  apt:
+    pkg: nginx
+  
+- name: Configuración de virtualhost
+  become: true
+  template: 
+    src: etc/nginx/sites-available/vhost.j2
+    dest: /etc/nginx/sites-available/{{item["name"]}}
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items:
+    - "{{virtualhosts}}"
+
+- name: Copy pagina1
+  copy:
+    src: pagina1
+    dest: /srv/www/
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: Copy pagina2
+  copy:
+    src: pagina2
+    dest: /srv/www/
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: Copy info.php
+  copy:
+    src: info.php
+    dest: /srv/www/
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: add vhost default
+  copy:
+    src: default
+    dest: /etc/nginx/sites-available/default
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: link vhost default.
+  copy:
+    src: default
+    dest: /etc/nginx/sites-enabled/default
+    owner: www-data
+    group: www-data
+    mode: 0644
+
+- name: Add vhost symlink in sites-enabled.
+  file:
+    src: /etc/nginx/sites-available/{{item["name"]}}
+    dest: /etc/nginx/sites-enabled/{{item["name"]}}
+    state: link
+    mode: 0644
+  with_items:
+    - "{{virtualhosts}}"
+  notify: restart nginx
+
+- name: Desactivar virtualhost
+  file:
+    path: /etc/nginx/sites-enabled/{{item["name"]}}
+    state: absent  
+  with_items:
+    - "{{delvirtualhosts}}"
+  notify: restart nginx

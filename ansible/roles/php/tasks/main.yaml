@@ -1,0 +1,7 @@
+- name: Install php
+  apt:
+    pkg: php7.4
+    pkg: php7.4-fpm
+    pkg: php7.4-mysql
+    pkg: php7.4-cli
+    pkg: php-fpm

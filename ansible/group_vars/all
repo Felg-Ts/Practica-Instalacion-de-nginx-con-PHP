@@ -1,0 +1,19 @@
+# nginx
+virtualhosts:
+  - name: vhost1
+    datos:
+      server_name: example1.com www.example1.com;
+      root: /srv/www/pagina1;
+      index: index.php index.html index.nginx-debian.html;
+      access_log: /var/log/nginx/example1_access.log;
+      error_log: /var/log/nginx/example1_error.log;
+  - name: vhost2
+    datos:
+      server_name: example2.com www.example2.com;
+      root: /srv/www/pagina2;
+      index: index.php index.html index.nginx-debian.html;
+      access_log: /var/log/nginx/example2_access.log;
+      error_log: /var/log/nginx/example2_error.log;
+
+delvirtualhosts:
+  - name: none
